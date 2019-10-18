@@ -1,16 +1,17 @@
 from flask import Flask
-from flask_sslify import SSLify
+from config import TOKEN
+
+"""TODO
+1.прием сообщений
+2.отсылка сообщений
+"""
 
 
-app = Flask(__name__)
-sslify = SSLify(app) # для https
 
+URL = f"https://api.telegram.org/bot{TOKEN}"
 
-#простая вьюха
+#app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return '<h1>Test Flask app</h1>'
 
 if __name__ == '__main__':
-    app.run()
+   main()
