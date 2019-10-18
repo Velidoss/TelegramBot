@@ -1,5 +1,5 @@
 from flask import Flask
-from config import TOKEN
+from config.secret_token import TOKEN
 
 """TODO
 1.прием сообщений
