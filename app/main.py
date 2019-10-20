@@ -1,7 +1,7 @@
 import requests
 import json
 from flask import Flask, request, jsonify #это не те реквесты что выше
-from secret_token import TOKEN, COIN_API
+from secret_token import TOKEN
 
 
 app = Flask(__name__)
@@ -14,10 +14,9 @@ def write_json(data, filename = 'answer.json'):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
-def get_price():
-    url = 'https://api.coinmarketcap.com/v1/ticker/bitcoin'
-    r = requests.get(url)
-    write_json(r.json(), filename='price.json')
+
+
+
 
 
 def send_message(chat_id, text='bla-bla-bla'):
