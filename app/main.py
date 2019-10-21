@@ -1,7 +1,8 @@
 import requests
 import json
+import re
 from flask import Flask, request, jsonify #это не те реквесты что выше
-from secret_token import TOKEN
+from secret_token import TOKEN, CRYPTO_API_KEY
 
 
 app = Flask(__name__)
@@ -14,7 +15,32 @@ def write_json(data, filename = 'answer.json'):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
+#парсер текста
+def parse_text(text):
+    pattern = r'/\w+'
+    crypto = re.search(pattern, text).group()
+    return crypto[1:]
 
+
+
+def get_price(crypto):
+    
+    parameters = {
+        'start':'1',
+        'limit':'1',
+        'convert':f'{crypto}'
+    }
+    headers = {
+  'Accepts': 'application/json',
+  'X-CMC_PRO_API_KEY': f'{CRYPTO_API_KEY}'
+}
+    url ='https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+    r = requests.get(url, headers = headers, params=parameters).json() #при оборачивании в .json() объекст становится итерируемым, то есть можно обратиться по индексу и тд.
+    price = r["data"][-1]["quote"][f"{crypto}"]["price"]
+    return price
+
+
+    #write_json(r.json(), filename='price.json')
 
 
 
