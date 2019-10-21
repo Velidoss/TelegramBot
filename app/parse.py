@@ -2,23 +2,35 @@ import requests
 from main import write_json
 import re
 
+#парсер текста
+def parse_text(text):
+    pattern = r'/\w+'
+    crypto = re.search(pattern, text).group()
+    print(crypto)
+
 
 
 def get_price():
-    key = '53667124-103a-49e3-8a3c-359dcbd37bec'
+    
     parameters = {
-        'symbol':'BTC'
+        'start':'1',
+        'limit':'1',
+        'convert':'USD'
     }
-    url = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY={key}'
-    r = requests.get(url, params=parameters).json()
-    slug = r["data"][-1]["slug"]
-    return slug
+    headers = {
+  'Accepts': 'application/json',
+  'X-CMC_PRO_API_KEY': '53667124-103a-49e3-8a3c-359dcbd37bec',
+}
+    url ='https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+    r = requests.get(url, headers = headers, params=parameters).json() #при оборачивании в .json() объекст становится итерируемым, то есть можно обратиться по индексу и тд.
+    price = r["data"][-1]["quote"]["USD"]["price"]
+    return price
     #write_json(r.json(), filename='price.json')
 
-print(get_price())
+
 
 def main():
-    pass
+    print(get_price())
 
 
 
